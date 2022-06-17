@@ -1,3 +1,9 @@
+import { feature } from 'topojson-client';
+const countries = require('../assets/countries-50m.json');
+export const COUNTRIES = feature(countries, countries.objects.countries)
+  .features;
+
+console.log(COUNTRIES);
 interface AppConfig {
   env: 'prod' | 'test';
   url: string;

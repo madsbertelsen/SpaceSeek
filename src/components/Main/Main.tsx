@@ -14,6 +14,9 @@ import { ErrorBoundary } from '../Error/ErrorBoundary';
 import { useStore, ColorScheme } from '../../hooks/useStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemedStatusBar } from '../ThemedStatusBar/ThemedStatusBar';
+import { store, persistor } from '../../redux/store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const LOADING_TIME_MS = 1200;
 
@@ -65,7 +68,11 @@ export const Main = () => {
         <ThemeProvider theme={colorScheme === 'light' ? lightTheme : darkTheme}>
           {/* get rid of 'white page flash' by passing initialMetrics */}
           <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-            <BottomNavigator />
+            <Provider store={store}>
+              <PersistGate loading={<SplashScreen />} persistor={persistor}>
+                <BottomNavigator />
+              </PersistGate>
+            </Provider>
           </SafeAreaProvider>
         </ThemeProvider>
       </NavigationContainer>

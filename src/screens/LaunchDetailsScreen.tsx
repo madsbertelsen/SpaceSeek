@@ -26,6 +26,7 @@ export const LaunchDetailsScreen = (props: DetailsScreenProps) => {
 
   const id = props.route?.params?.id;
 
+  /*
   React.useEffect(() => {
     if (!id) {
       return;
@@ -43,14 +44,16 @@ export const LaunchDetailsScreen = (props: DetailsScreenProps) => {
         setError(true);
       });
   }, [id]);
+  */
 
-  // React.useEffect(() => {
-  //   const t = setTimeout(() => {
-  //     setData(require('../mockData/launchDetailed.json'));
-  //   }, 1000);
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      const objs = require('../mockData/launches.json');
+      setData(objs.results.find((f) => f.id === id));
+    }, 1000);
 
-  //   return () => clearTimeout(t);
-  // }, []);
+    return () => clearTimeout(t);
+  }, []);
 
   if (!data) {
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import * as RN from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -15,60 +15,15 @@ import { ImageLoadingWrapper } from '../Basic/ImageLoadingWrapper';
 import { RocketIcon } from '../SVG/RocketIcon';
 import { MapIcon } from '../SVG/MapIcon';
 import { SecondSpinner } from '../SpaceList/SecondSpinner';
-import Svg, { G, Path, Circle } from 'react-native-svg';
-import * as d3 from 'd3';
-import { COUNTRIES } from '../../config/config';
-import MapboxGL from '@rnmapbox/maps';
-
-const cout = COUNTRIES;
-//.filter((c) => c.properties.name.includes('D'));
 
 const IMAGE_SCALE_MAX = 20;
 const LABEL_HEADER_MARGIN = 48;
 
 export const LaunchContent = (content: LaunchDetailed) => {
-  const [countryList, setCountryList] = useState([]);
   const pan = React.useRef(new RN.Animated.ValueXY()).current;
-  const { height, width } = RN.Dimensions.get('screen');
-  const mapExtent = useMemo(() => {
-    return width > height / 2 ? height / 2 : width;
-  }, []);
-
-  const countryPaths = useMemo(() => {
-    console.log(cout);
-
-    const projection = d3
-      .geoMercator()
-      .scale(5000)
-      // Center the Map to middle of shown area
-      .center([9.0, 56.7])
-      .translate([width / 2, mapExtent / 2]);
-    const geoPath = d3.geoPath().projection(projection);
-    const svgPaths = cout.map(geoPath);
-    return svgPaths;
-  }, [cout]);
-
-  useEffect(() => {
-    setCountryList(
-      countryPaths.map((path: any, i: any) => {
-        return (
-          <Path
-            key={cout[i].properties.name}
-            d={path}
-            stroke={'#000'}
-            strokeOpacity={0.9}
-            strokeWidth={2.6}
-            fill={'#aaa'}
-            opacity={0.4}
-          />
-        );
-      }),
-    );
-  }, []);
 
   return (
     <BaseScroll
-      bounces={false}
       contentContainerStyle={{ padding: 0 }}
       onScroll={RN.Animated.event(
         [{ nativeEvent: { contentOffset: { y: pan.y } } }],
@@ -79,7 +34,6 @@ export const LaunchContent = (content: LaunchDetailed) => {
       alwaysBounceVertical={false}
       contentInsetAdjustmentBehavior="never"
       scrollEventThrottle={1}>
-      {/*
       <ImageLoadingWrapper
         animStyle={{
           transform: [
@@ -104,10 +58,6 @@ export const LaunchContent = (content: LaunchDetailed) => {
         resizeMode="cover"
       />
 
-          */}
-      <Svg width={width} height={height / 2}>
-        <G>{countryList.map((x) => x)}</G>
-      </Svg>
       <RN.Animated.View
         style={{
           paddingHorizontal: 16,
@@ -124,6 +74,13 @@ export const LaunchContent = (content: LaunchDetailed) => {
         <RegularText size="xxl" fontType="bold">
           {content.name}
         </RegularText>
+        <SecondSpinner
+          style={{ marginLeft: 24 }}
+          fill="black"
+          width={400}
+          height={400}
+        />
+        <MapIcon width={400} height={400} fill="black" />
         <RocketContent {...content} />
         <LaunchServiceProviderContent {...content} />
         <MissionContent {...content} />
@@ -197,44 +154,7 @@ export const LaunchServiceProviderContent = (content: LaunchDetailed) => {
       <T.Description text={text} />
 
       <T.Description text={content.launch_service_provider?.description} />
-      <MapboxGL.MapView
-        //styleURL={style}
-        styleJSON={JSON.stringify(mapStyle)}
-        logoEnabled={false}
-        style={{ flex: 1, height: 200 }}>
-        <MapboxGL.UserLocation />
-        <MapboxGL.Camera
-          defaultSettings={{
-            animationMode: 'flyTo',
-            animationDuration: 10,
-            padding: {
-              paddingBottom: 200,
-              paddingLeft: 50,
-              paddingRight: 50,
-              paddingTop: 50,
-            },
-            bounds: {
-              ne: [8.6656779, 56.5821725],
-              sw: [8.6122483, 56.5146583],
-            },
-          }}
-          centerCoordinate={experience.geometry.coordinates}
-          zoomLevel={12}
-          padding={{
-            paddingBottom: 200,
-            paddingLeft: 50,
-            paddingRight: 50,
-            paddingTop: 50,
-          }}
-        />
-        <MapboxGL.ShapeSource
-          id="mapstory"
-          shape={{
-            type: 'FeatureCollection',
-            features: [{ type: 'Feature', ...experience }],
-          }}
-        />
-      </MapboxGL.MapView>
+
       <BadgeWrapper
         type="wiki"
         url={content.launch_service_provider?.wiki_url}

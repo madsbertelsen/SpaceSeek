@@ -13,6 +13,7 @@ import { LaunchSerializerCommon, LaunchService } from '../service/service';
 import { StyledSearchItemSeparator } from '../components/SearchBar/Search.styled';
 import { RecentSearchItem } from '../components/SearchBar/RecentSearchItem';
 import { SecondSpinner } from '../components/SpaceList/SecondSpinner';
+import { Text } from 'react-native-svg';
 
 export const LaunchScreen = () => {
   const { searchVisible } = useStore();
@@ -44,25 +45,28 @@ const CategoryWrapper = () => {
     setLimit(15);
   }, [category]);
 
+  /*
   React.useEffect(() => {
     LaunchService[category]({ limit })
       .then((res) => {
         setData(res.results);
         setError(false);
       })
-      .catch(() => {
+      .catch((e) => {
         //TODO: track
+        console.log(e);
         setError(true);
       });
   }, [limit, category]);
+  */
 
-  // React.useEffect(() => {
-  //   const t = setTimeout(() => {
-  //     setData(require('../mockData/launches.json').results);
-  //   }, 1000);
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      setData(require('../mockData/launches.json').results);
+    }, 1000);
 
-  //   return () => clearTimeout(t);
-  // }, [category, limit]);
+    return () => clearTimeout(t);
+  }, [category, limit]);
 
   if (error) {
     return <ErrorText />;

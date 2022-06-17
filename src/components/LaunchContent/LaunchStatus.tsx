@@ -66,19 +66,9 @@ export const LaunchStatus = (content: LaunchDetailed) => {
   if (distance < 0) {
     return (
       <>
-        <RN.View style={{ flexDirection: 'row' }}>
-          <SectionTitle
-            text={`Launch was a ${(
-              content.status?.name || 'success'
-            ).toLowerCase()}`}
-          />
-
-          <StatusIcon {...content} />
-        </RN.View>
-
         <S.StyledDateWrapper>
           <RegularText size="xxl" fontType="bold">
-            {net.toLocaleDateString()}
+            Venø Rundt - vandring langs Venø's kyster
           </RegularText>
         </S.StyledDateWrapper>
 
@@ -91,13 +81,17 @@ export const LaunchStatus = (content: LaunchDetailed) => {
     <>
       <RN.View style={{ flexDirection: 'row' }}>
         <SectionTitle
-          text={`Launch: ${(content.status?.name || 'success').toLowerCase()}`}
+          text={`Launch h: ${(
+            content.status?.name || 'success'
+          ).toLowerCase()}`}
         />
+        <RN.Text>hej</RN.Text>
 
         <StatusIcon {...content} />
       </RN.View>
 
       <S.StyledDateWrapper>
+        <RN.Text>hej</RN.Text>
         <Numbers label="Days" n={days} />
 
         <Separator />
