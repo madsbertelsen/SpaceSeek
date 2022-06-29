@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
 import { Title } from '../components/Basic/Basic';
-import { LaunchDetailed, LaunchService } from '../service/service';
 import { BlurView } from '@react-native-community/blur';
-import { LaunchContent } from '../components/LaunchContent/LaunchContent';
+import { CollectionContent } from '../components/LaunchContent/CollectionContent';
 import { ThemedStatusBar } from '../components/ThemedStatusBar/ThemedStatusBar';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { TourContent } from '../components/LaunchContent/TourContent';
 
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
@@ -19,43 +21,26 @@ export interface DetailsScreenProps {
   };
 }
 
-export const LaunchDetailsScreen = (props: DetailsScreenProps) => {
-  const [data, setData] = React.useState<LaunchDetailed | null>(null);
+export const ArticleScreen = (props: DetailsScreenProps) => {
   const [error, setError] = React.useState(false);
   const { t } = useTranslation();
-
-  const id = props.route?.params?.id;
-
-  /*
-  React.useEffect(() => {
-    if (!id) {
-      return;
-    }
-
-    LaunchService.launchRead(id)
-      .then((res) => {
-        setData(res);
-        setError(false);
-        console.warn(res);
-      })
-      .catch((e) => {
-        console.warn(e);
-        //TODO: track
-        setError(true);
-      });
-  }, [id]);
-  */
+  const id = parseInt(props.route?.params?.id!);
+  // const feature = useSelector((state: RootState) => state.features.features[0]);
+  const features = useSelector((state: RootState) => state.features.features);
+  const feature = features.find((f) => f.id === id)!;
 
   React.useEffect(() => {
     const t = setTimeout(() => {
+      /*
       const objs = require('../mockData/launches.json');
-      setData(objs.results.find((f) => f.id === id));
+      setData(features.find((f) => f.id.toString() === id)!);
+      */
     }, 1000);
 
     return () => clearTimeout(t);
   }, []);
 
-  if (!data) {
+  if (!feature) {
     return (
       <>
         <BlurView style={[styles.img]} />
@@ -68,8 +53,12 @@ export const LaunchDetailsScreen = (props: DetailsScreenProps) => {
     <>
       <ThemedStatusBar barStyle="dark-content" />
 
-      {!data && error && <Title>{t('errorText')}</Title>}
-      {!data || error ? <ActivityIndicator /> : <LaunchContent {...data} />}
+      {!feature && error && <Title>{t('errorText')}</Title>}
+      {!feature || error ? (
+        <ActivityIndicator />
+      ) : (
+        <CollectionContent {...feature!} />
+      )}
     </>
   );
 };

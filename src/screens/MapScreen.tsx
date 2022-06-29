@@ -66,23 +66,6 @@ export const MapScreen = (props: MapScreenProps) => {
         pointerEvents="box-none">
         <Search onChangeItem={onChangeItem} />
       </SafeAreaView>
-
-      <MapView
-        style={{ flex: 1, position: 'absolute', width, height, zIndex: 0 }}
-        region={region}
-        onRegionChangeComplete={setRegion}
-        initialRegion={DEFAULT_REGION}>
-        <Marker
-          pinColor={theme.focusedIconColor}
-          key={item.id || 1}
-          coordinate={{
-            latitude: Number(item.latitude || '0') || region.latitude,
-            longitude: Number(item.longitude || '0') || region.longitude,
-          }}
-          title={item.name || 'Launch'}
-          description={`${item.location?.name}`}
-        />
-      </MapView>
     </>
   );
 };

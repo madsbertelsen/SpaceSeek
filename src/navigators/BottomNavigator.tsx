@@ -12,16 +12,28 @@ import { NavBarLabel } from '../components/NavBarLabel/NavBarLabel';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { useTheme } from 'styled-components';
+import { LaunchScreen } from '../screens/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
-export const BottomNavigator = () => {
+export const Tabs = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
-      screenOptions={screenOptions}
+      screenOptions={({ _route }: any) => {
+        return {
+          tabBarIcon: NavBarIcon,
+          tabBarLabel: NavBarLabel,
+          tabBarStyle: {
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            backgroundColor: theme.headerBackgroundColor,
+          },
+        };
+      }}
+      /*
       tabBarOptions={{
         ...tabBarOptions,
         tabStyle: {
@@ -36,12 +48,16 @@ export const BottomNavigator = () => {
           paddingBottom: 8 + insets.bottom,
         },
       }}
-      initialRouteName={bottomRoutes.launches}>
+      */
+      initialRouteName={bottomRoutes.home}>
       {/* <Tab.Screen name={bottomRoutes.home} component={SpaceStackNavigator} /> */}
       <Tab.Screen
-        options={{ tabBarTestID: 'launches-route-btn' }}
-        name={bottomRoutes.launches}
-        component={LaunchStackNavigator}
+        options={{
+          headerShown: false,
+          tabBarTestID: 'launches-route-btn',
+        }}
+        name={bottomRoutes.home}
+        component={LaunchScreen}
       />
 
       <Tab.Screen
@@ -58,10 +74,3 @@ export const BottomNavigator = () => {
     </Tab.Navigator>
   );
 };
-
-const screenOptions: BottomTabNavigationOptions = {
-  tabBarIcon: NavBarIcon,
-  tabBarLabel: NavBarLabel,
-};
-
-const tabBarOptions: BottomTabBarOptions = {};

@@ -14,9 +14,32 @@ import { StyledSearchItemSeparator } from '../components/SearchBar/Search.styled
 import { RecentSearchItem } from '../components/SearchBar/RecentSearchItem';
 import { SecondSpinner } from '../components/SpaceList/SecondSpinner';
 import { Text } from 'react-native-svg';
+import { FocusView } from './FocusView';
+const featureCollection = require('./limfjorden.json');
 
 export const LaunchScreen = () => {
   const { searchVisible } = useStore();
+  /*
+  return (
+    <RN.View
+      style={{
+        top: 0,
+        bottom: 200,
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+      }}>
+      <FocusView
+        focusFeature={featureCollection.features.find(
+          (f) => f.properties.name === 'Limfjorden',
+        )}
+        contextFeature={featureCollection.features.find(
+          (f) => f.properties.name === 'Denmark',
+        )}
+      />
+    </RN.View>
+  );
+  */
 
   if (searchVisible) {
     return (
@@ -37,7 +60,7 @@ const CategoryWrapper = () => {
   const { category } = useStore();
 
   const [error, setError] = React.useState(false);
-  const [data, setData] = React.useState<LaunchSerializerCommon[] | null>(null);
+  const [data, setData] = React.useState<Feature[] | null>(null);
   const [limit, setLimit] = React.useState(15);
 
   React.useEffect(() => {
@@ -140,6 +163,29 @@ const RecentList = () => {
   }
 
   return (
+    <RN.View
+      style={{
+        backgroundColor: 'green',
+        top: 0,
+        bottom: 200,
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+      }}>
+      {
+        <FocusView
+          focusFeature={featureCollection.features.find(
+            (f) => f.properties.name === 'Limfjorden',
+          )}
+          contextFeature={featureCollection.features.find(
+            (f) => f.properties.name === 'Denmark',
+          )}
+        />
+      }
+    </RN.View>
+  );
+  /*
+  return (
     <>
       <Title size="xl" style={{ paddingTop: 24, paddingLeft: 24 }}>
         {t('recentSearches')}
@@ -168,4 +214,5 @@ const RecentList = () => {
       />
     </>
   );
+  */
 };

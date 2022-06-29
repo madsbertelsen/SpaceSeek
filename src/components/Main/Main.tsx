@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components';
 
 import '../../config/i18n';
-import { BottomNavigator } from '../../navigators/BottomNavigator';
 import { darkTheme, lightTheme } from '../../config/theme';
 import '../../service/initApi';
 import { SplashScreen } from '../SplashScreen/SplashScreen';
@@ -14,9 +13,15 @@ import { ErrorBoundary } from '../Error/ErrorBoundary';
 import { useStore, ColorScheme } from '../../hooks/useStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemedStatusBar } from '../ThemedStatusBar/ThemedStatusBar';
-import { store, persistor } from '../../redux/store';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+import { setFeatures } from '../../redux/reducers/featuresSlice';
+import { setStyle } from '../../redux/reducers/mapSlice';
+import { useDispatch } from 'react-redux';
+import { Tabs } from '../../navigators/BottomNavigator';
+import { LaunchStackNavigator } from '../../navigators/LaunchStackNavigator';
+import { setConfig } from '../../redux/reducers/configSlice';
+const axios = require('axios');
+const mapStyle = require('./style.json');
+const data = require('./data.json');
 
 const LOADING_TIME_MS = 1200;
 
@@ -25,13 +30,36 @@ export const Main = () => {
   const rnScheme = useColorScheme();
   const colorScheme = useStore((state) => state.colorScheme);
   const setColorScheme = useStore((state) => state.setColorScheme);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    const t = setTimeout(() => {
-      setLoaded(true);
-    }, LOADING_TIME_MS);
+    const start = async () => {
+      try {
+        /*
+        const data = (await axios.get('http:/192.168.1.150:1337/api/map/style'))
+          .data;
+          */
 
-    return () => clearTimeout(t);
+        /*
+        const data = (
+          await axios.get(
+            'https://cms.limfjordsruter.mapstory.app/api/map/style',
+          )
+        ).data;
+        */
+
+        dispatch(setFeatures(data.features));
+        dispatch(setStyle(mapStyle));
+        dispatch(setConfig(data.config));
+        console.log('Start 1');
+        console.log(data.features);
+        //setMapStyle(data.style);
+        setLoaded(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    start();
   }, []);
 
   React.useEffect(() => {
@@ -68,11 +96,10 @@ export const Main = () => {
         <ThemeProvider theme={colorScheme === 'light' ? lightTheme : darkTheme}>
           {/* get rid of 'white page flash' by passing initialMetrics */}
           <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-            <Provider store={store}>
-              <PersistGate loading={<SplashScreen />} persistor={persistor}>
-                <BottomNavigator />
-              </PersistGate>
-            </Provider>
+            <LaunchStackNavigator />
+            {/*
+            <Tabs />
+              */}
           </SafeAreaProvider>
         </ThemeProvider>
       </NavigationContainer>

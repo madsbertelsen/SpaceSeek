@@ -3,6 +3,10 @@ import create from 'zustand';
 import { Category } from '../config/locales/localeTypes';
 
 type State = {
+  features: Feature[];
+  setFeatures: (value: Feature[]) => void;
+  mapStyle: any;
+  setMapStyle: (value: any) => void;
   colorScheme: ColorScheme;
   setColorScheme: (scheme: ColorScheme) => void;
   searchValue: string;
@@ -32,6 +36,12 @@ export const useStore = create<State>((set, get) => {
       let key = 'theme';
 
       await AsyncStorage.setItem(key, colorScheme);
+
+      set(() => ({ colorScheme }));
+    },
+    features: [],
+    setFeatures: async (value) => {
+      let key = 'features';
 
       set(() => ({ colorScheme }));
     },

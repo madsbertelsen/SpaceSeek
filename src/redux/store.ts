@@ -1,5 +1,5 @@
 import featuresReducer from './reducers/featuresSlice';
-import mapStyle from './reducers/mapStyle';
+import mapStyle from './reducers/mapSlice';
 import {
   persistStore,
   persistReducer,
@@ -14,9 +14,14 @@ import {
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 //import storage from 'redux-persist/lib/storage';
 import storage from '@react-native-async-storage/async-storage';
+import config from './reducers/configSlice';
+import tour from './reducers/tourSlice';
 
 const reducer = combineReducers({
-  mapStyle,
+  features: featuresReducer,
+  map: mapStyle,
+  config: config,
+  tour: tour,
 });
 
 const persistConfig = {

@@ -2,6 +2,7 @@ import { useIsFocused, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { useTheme } from 'styled-components';
 import { BottomRoute } from '../../navigators/routes';
+import { HomeIcon } from '../SVG/HomeIcon';
 import { RocketIcon } from '../SVG/RocketIcon';
 import { SearchIcon } from '../SVG/SearchIcon';
 import { SettingsIcon } from '../SVG/SettingsIcon';
@@ -19,9 +20,9 @@ export const NavBarIcon = () => {
   const backgroundColor = isFocused ? focusedIconColor : unFocusedIconColor;
 
   switch (name) {
-    case 'launches': {
+    case 'home': {
       return (
-        <RocketIcon
+        <HomeIcon
           fill={backgroundColor}
           width={ICON_SIZE}
           height={ICON_SIZE}

@@ -40,10 +40,12 @@ export interface IStyledCustomText {
   size: FontSize;
   fontType: FontType;
   fontColor: FontColor;
+  backgroundColor: string;
 }
 
 export const StyledCustomText = styled.Text<IStyledCustomText>`
   color: ${(props) => props.theme.fontColors[props.fontColor]};
+  backgroundcolor: ${(props) => props.backgroundColor};
   font-size: ${(props) => fontSizes[props.size]};
   line-height: ${(props) => lineHeights[props.size]};
   font-family: ${(props) => fontFamilies[props.fontType]};
