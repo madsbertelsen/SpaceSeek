@@ -19,6 +19,8 @@ target 'SpaceSeek' do
   # you should disable the next line.
   use_flipper!()
 
+  pod 'RNReactNativeHapticFeedback', :path => '../node_modules/react-native-haptic-feedback'
+
   pre_install do |installer|
     $RNMapboxMaps.pre_install(installer)
   end

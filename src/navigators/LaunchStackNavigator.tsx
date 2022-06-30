@@ -44,7 +44,7 @@ export const LaunchStackNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={spaceRoutes.details}
+      initialRouteName={spaceRoutes.tourdetails}
       screenOptions={{
         headerBackTitleVisible: false,
         headerTitle: '',

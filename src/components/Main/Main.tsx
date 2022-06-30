@@ -49,8 +49,6 @@ export const Main = () => {
         dispatch(setFeatures(data.features));
         dispatch(setStyle(mapStyle));
         dispatch(setConfig(data.config));
-        console.log('Start 1');
-        console.log(data.features);
         //setMapStyle(data.style);
         setLoaded(true);
       } catch (error) {
@@ -95,9 +93,6 @@ export const Main = () => {
           {/* get rid of 'white page flash' by passing initialMetrics */}
           <SafeAreaProvider initialMetrics={initialWindowMetrics}>
             <LaunchStackNavigator />
-            {/*
-            <Tabs />
-              */}
           </SafeAreaProvider>
         </ThemeProvider>
       </NavigationContainer>

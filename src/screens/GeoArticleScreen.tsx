@@ -18,6 +18,7 @@ import BottomSheet, {
   ScrollEventsHandlersHookType,
 } from '@gorhom/bottom-sheet';
 import { SectionContent } from './components/SectionContent';
+import { bboxPolygon, difference, feature } from '@turf/turf';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
@@ -110,6 +111,27 @@ export const GeoArticleScreen = (props: DetailsScreenProps) => {
       */
     };
   };
+
+  const mapFeatures = useMemo(() => {
+    const featureCollection = {
+      type: 'FeatureCollection',
+      features: [],
+    } as any;
+
+    // bboxPolygon(bbox);
+    // difference(b);
+    console.log(bbox);
+
+    const temp = difference(
+      bboxPolygon([0, 0, 90, 90]),
+      //bboxPolygon(bbox as any),
+      feature(content.geometry),
+    );
+    console.log(temp);
+
+    featureCollection.features.push(temp);
+    return featureCollection;
+  }, [content, bbox]);
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
     const pad = snapPoints[index];
@@ -178,22 +200,7 @@ export const GeoArticleScreen = (props: DetailsScreenProps) => {
                 paddingTop: 50,
               }}
             />
-            <MapboxGL.ShapeSource
-              id="mapstory"
-              shape={{
-                type: 'FeatureCollection',
-                features: [
-                  {
-                    ...content,
-                    type: 'Feature',
-                    properties: {
-                      ...(content as any).properties,
-                      color: theme.focusedIconColor,
-                    },
-                  } as any,
-                ],
-              }}
-            />
+            <MapboxGL.ShapeSource id="mapstory" shape={mapFeatures} />
           </MapboxGL.MapView>
           <BottomSheet
             /*

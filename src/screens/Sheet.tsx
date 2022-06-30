@@ -32,38 +32,31 @@ import ImageCollage from './components/ImageCollage';
 import { ContentSection } from '../components/LaunchContent/LaunchContent.styled';
 import { difference, bboxPolygon, feature } from '@turf/turf';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Sheet } from './Sheet';
-import { pushScreen } from '../redux/reducers/configSlice';
+import { popScreen, pushScreen } from '../redux/reducers/configSlice';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
 
-export interface DetailsScreenProps {
-  route?: {
-    params?: DetailsScreenIncomeParamsProps;
-  };
+export interface SheetProps {
+  onDismiss: () => void;
+  onPush: (id: number) => void;
+  id: number;
 }
 const { height, width } = RN.Dimensions.get('screen');
 
-export const TourArticleScreen = (props: DetailsScreenProps) => {
+export const Sheet = ({ id, onDismiss, onPush }: SheetProps) => {
   const dispatch = useDispatch();
-  const [error, setError] = React.useState(false);
-  const { t } = useTranslation();
   const features = useSelector((state: RootState) => state.features.features);
+  // const feature = useSelector((state: RootState) => state.features.features[0]);
   const conf = useSelector((state: RootState) => state.config);
   console.log(conf);
-  const id = props.route?.params?.id
-    ? parseInt(props.route?.params?.id!)
-    : conf.root_screen_id;
 
   const content = features.find((f) => f.id === id)!;
-  const [stack, setStack] = useState<number[]>([id]);
-  const [nextStack, setNextStack] = useState<number[]>([]);
 
   const theme = useTheme();
-  const mapStyle = useSelector((state: RootState) => state.map.style);
   const tour = useSelector((state: RootState) => state.tour);
   //  const features = useSelector((state: RootState) => state.tour.features);
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const bbox = content.bbox;
   const bounds = { sw: [bbox[0], bbox[1]], ne: [bbox[2], bbox[3]] };
@@ -75,7 +68,9 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
     snapPoints[1] + 50,
   );
 
-  const fe = useMemo(() => {});
+  useEffect(() => {
+    bottomSheetModalRef!.current!.present();
+  }, [id]);
 
   const mapFeatures = useMemo(() => {
     const featureCollection = {
@@ -128,9 +123,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
       return;
     }
     const waypointIds = content.sub_categories[0].screens.map((s) => s.id);
-    console.log('LOAD tour');
-    console.log(waypointIds);
-
     dispatch(
       loadTour({
         lineFeature: content,
@@ -138,12 +130,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
       }),
     );
   }, []);
-
-  useEffect(() => {
-    if (tour.features.length < 1) {
-      return;
-    }
-  }, [tour.features, conf.stack]);
 
   const handleSheetChanges = useCallback((index: number) => {
     const pad = snapPoints[index];
@@ -186,8 +172,14 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
     // ...
   };
   const renderItem = useCallback((prop) => {
-    if (prop.item.type === 'waypoint') {
-      return <Waypoint key={prop.item.index} idx={prop.item.index} />;
+    if (prop.item.type === 'vertical_waypoints') {
+      return (
+        <Waypoint
+          key={prop.item.index}
+          idx={prop.item.index}
+          onPress={() => dispatch(pushScreen({ id: prop.item.index }))}
+        />
+      );
     } else if (prop.item.type === 'description') {
       return (
         <RN.View style={{ padding: 20 }}>
@@ -223,10 +215,9 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
           {prop.item.cardElements.map((f) => (
             <RN.Pressable
               onPress={() => {
-                console.log('hej');
-                setStack([...stack, f.id]);
-                // bottomSheetModalRef.current?.present();
-                console.log('hej');
+                onPush(f.id);
+                //bottomSheetModalRef.current?.present();
+                console.log('');
               }}>
               <RN.View
                 style={{
@@ -271,77 +262,43 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
   );
 
   return (
-    <>
-      <BottomSheetModalProvider>
-        <ThemedStatusBar barStyle="dark-content" />
-        <RN.View
-          style={{
-            padding: 16,
-            shadowRadius: 8,
-            shadowOffset: [5, 5],
-            shadowOpacity: 0.3,
-            shadowColor: 'black',
-            borderRadius: 8,
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
-          }}>
-          <RN.View
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-            }}>
-            <MapboxGL.MapView
-              styleJSON={JSON.stringify(mapStyle)}
-              logoEnabled={false}
-              style={{
-                flex: 1,
-                height: 300,
-                marginHorizontal: content.marginHorizontal,
-              }}>
-              {/*
-        <MapboxGL.UserLocation />
-        */}
-              <MapboxGL.Camera
-                defaultSettings={{
-                  animationMode: 'flyTo',
-                  animationDuration: 1,
-                }}
-                //   centerCoordinate={content.geometry.coordinates}
-                animationDuration={100}
-                bounds={bounds}
-                padding={{
-                  paddingBottom: paddingBottom,
-                  paddingLeft: 50,
-                  paddingRight: 50,
-                  paddingTop: 50,
-                }}
-              />
-              <MapboxGL.ShapeSource id="mapstory" shape={mapFeatures as any} />
-            </MapboxGL.MapView>
-            {conf.stack &&
-              conf.stack.map((screenId) => (
-                <Sheet
-                  onDismiss={() => {}}
-                  onPush={(idx) => {
-                    dispatch(pushScreen({ id: idx }));
-                    //   bottomSheetModalRef.current!.dismiss();
-                    //   setStack(idx);
-                    //  bottomSheetModalRef.current?.present();
-                  }}
-                  key={screenId}
-                  id={screenId}
-                />
-              ))}
-          </RN.View>
-        </RN.View>
-      </BottomSheetModalProvider>
-    </>
+    <BottomSheetModal
+      stackBehavior="push"
+      index={1}
+      snapPoints={snapPoints}
+      ref={bottomSheetModalRef}
+      onDismiss={() => {
+        console.log('dismissssss ');
+        dispatch(popScreen());
+        // bottomSheetModalRef.current!.present();
+      }}
+      style={{
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        shadowRadius: 20,
+      }}
+      onChange={handleSheetChanges}>
+      <BottomSheetSectionList
+        viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+        onViewableItemsChanged={(ev) => {
+          const firstIndex =
+            ev.viewableItems.length === 0
+              ? 0
+              : ev.viewableItems[0].index === null
+              ? 0
+              : ev.viewableItems[0].index;
+
+          if (firstIndex !== tour.focusWaypointIndex) {
+            dispatch(setFocusWaypoint({ index: firstIndex }));
+          }
+        }}
+        sections={sections}
+        keyExtractor={(i) => i.index}
+        renderSectionHeader={renderSectionHeader}
+        renderItem={renderItem}
+        contentContainerStyle={styles.contentContainer}
+      />
+    </BottomSheetModal>
   );
 };
 

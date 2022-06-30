@@ -41,6 +41,7 @@
     "react-native-config": "1.4.5",
     "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "~1.10.3",
+    "react-native-haptic-feedback": "^1.14.0",
     "react-native-in-app-review": "^3.2.3",
     "react-native-maps": "^0.29.3",
     "react-native-modal": "^13.0.0",
