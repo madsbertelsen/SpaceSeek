@@ -21,7 +21,7 @@ import { LaunchStackNavigator } from '../../navigators/LaunchStackNavigator';
 import { setConfig } from '../../redux/reducers/configSlice';
 const axios = require('axios');
 const mapStyle = require('./style.json');
-const data = require('./data.json');
+//const data = require('./data.json');
 
 const LOADING_TIME_MS = 1200;
 
@@ -35,10 +35,8 @@ export const Main = () => {
   React.useEffect(() => {
     const start = async () => {
       try {
-        /*
         const data = (await axios.get('http:/192.168.1.150:1337/api/map/style'))
           .data;
-          */
 
         /*
         const data = (

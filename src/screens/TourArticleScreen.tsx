@@ -121,15 +121,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
     );
   }, []);
 
-  // callbacks
-  if (!content) {
-    return (
-      <>
-        <BlurView style={[styles.img]} />
-        <ActivityIndicator style={{ marginTop: 16 }} />
-      </>
-    );
-  }
   const handleSheetChanges = useCallback((index: number) => {
     const pad = snapPoints[index];
     setPaddingBottom(pad + 50);
@@ -295,13 +286,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
             <BottomSheetSectionList
               viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
               onViewableItemsChanged={(ev) => {
-                /*
-                console.log(
-                  'count ',
-                  ev.viewableItems.length,
-                  '------------------------',
-                );
-                */
                 const firstIndex =
                   ev.viewableItems.length === 0
                     ? 0
