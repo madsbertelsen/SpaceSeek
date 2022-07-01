@@ -125,99 +125,102 @@ export const Sheet = ({
   const handleTextReady = () => {
     // ...
   };
-  const renderItem = useCallback((prop) => {
-    if (prop.item.type === 'vertical_waypoints') {
-      return (
-        <Waypoint
-          key={prop.item.index}
-          idx={prop.item.index}
-          onPress={() =>
-            dispatch(pushScreen({ id: tour.features[prop.item.index].id }))
-          }
-        />
-      );
-    } else if (prop.item.type === 'description') {
-      return (
-        <RN.View style={{ padding: 20 }}>
-          <ReadMore
-            style={{ flex: 1, width: '100%', padding: 20 }}
-            numberOfLines={3}
-            renderTruncatedFooter={renderTruncatedFooter}
-            renderRevealedFooter={renderRevealedFooter}
-            onReady={handleTextReady}>
-            <RegularText size="l" fontType="regular">
-              {prop.item.value}
-            </RegularText>
-          </ReadMore>
-          {content.photos && content.photos.length > 0 && (
-            <ImageCollage
-              height={400}
-              containerStyle={{ width: '100%' }}
-              images={content.photos}
-              onPressImage={(uri) => {
-                console.log('');
-              }}
-              matrix={[
-                1,
-                content.photos.length > 3 ? 3 : content.photos.length - 1,
-              ]}
-            />
-          )}
-        </RN.View>
-      );
-    } else if (prop.item.type === 'horizontal') {
-      return (
-        <ScrollView
-          style={{ backgroundColor: prop.item.backgroundColor }}
-          horizontal
-          showsHorizontalScrollIndicator={false}>
-          {prop.item.cardElements.map((f) => (
-            <RN.Pressable
-              onPress={() => {
-                onPush(f.id);
-              }}>
-              <RN.View
-                style={{
-                  margin: 30,
-                  backgroundColor: 'gray',
-                  height: 200,
-                  width: 200,
+  const renderItem = useCallback(
+    (prop) => {
+      if (prop.item.type === 'vertical_waypoints') {
+        return (
+          <Waypoint
+            key={prop.item.index}
+            idx={prop.item.index}
+            onPress={() =>
+              dispatch(pushScreen({ id: tour.features[prop.item.index].id }))
+            }
+          />
+        );
+      } else if (prop.item.type === 'description') {
+        return (
+          <RN.View style={{ padding: 20 }}>
+            <ReadMore
+              style={{ flex: 1, width: '100%', padding: 20 }}
+              numberOfLines={3}
+              renderTruncatedFooter={renderTruncatedFooter}
+              renderRevealedFooter={renderRevealedFooter}
+              onReady={handleTextReady}>
+              <RegularText size="l" fontType="regular">
+                {prop.item.value}
+              </RegularText>
+            </ReadMore>
+            {content.photos && content.photos.length > 0 && (
+              <ImageCollage
+                height={400}
+                containerStyle={{ width: '100%' }}
+                images={content.photos}
+                onPressImage={(uri) => {
+                  console.log('');
+                }}
+                matrix={[
+                  1,
+                  content.photos.length > 3 ? 3 : content.photos.length - 1,
+                ]}
+              />
+            )}
+          </RN.View>
+        );
+      } else if (prop.item.type === 'horizontal') {
+        return (
+          <ScrollView
+            style={{ backgroundColor: prop.item.backgroundColor }}
+            horizontal
+            showsHorizontalScrollIndicator={false}>
+            {prop.item.cardElements.map((f) => (
+              <RN.Pressable
+                onPress={() => {
+                  onPush(f.id);
                 }}>
-                <RN.Image
-                  style={{
-                    height: 200,
-                    width: 200,
-                  }}
-                  source={{ uri: f.img }}
-                />
                 <RN.View
                   style={{
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                    padding: 10,
-                    paddingLeft: 0,
-                    zIndex: 10,
-                    top: 0,
-                    left: 0,
-                    flex: 1,
+                    margin: 30,
+                    backgroundColor: 'gray',
+                    height: 200,
+                    width: 200,
                   }}>
-                  <RegularText size="l" fontType="bold">
-                    {f.name}
-                  </RegularText>
+                  <RN.Image
+                    style={{
+                      height: 200,
+                      width: 200,
+                    }}
+                    source={{ uri: f.img }}
+                  />
+                  <RN.View
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: 'white',
+                      padding: 10,
+                      paddingLeft: 0,
+                      zIndex: 10,
+                      top: 0,
+                      left: 0,
+                      flex: 1,
+                    }}>
+                    <RegularText size="l" fontType="bold">
+                      {f.name}
+                    </RegularText>
+                  </RN.View>
                 </RN.View>
-              </RN.View>
-            </RN.Pressable>
-          ))}
-        </ScrollView>
-      );
-    } else {
-      return (
-        <RN.View>
-          <RN.Text>{JSON.stringify(prop.item)}</RN.Text>
-        </RN.View>
-      );
-    }
-  }, []);
+              </RN.Pressable>
+            ))}
+          </ScrollView>
+        );
+      } else {
+        return (
+          <RN.View>
+            <RN.Text>{JSON.stringify(prop.item)}</RN.Text>
+          </RN.View>
+        );
+      }
+    },
+    [tour.features],
+  );
 
   // variables
   const sections = useMemo(
@@ -249,7 +252,7 @@ export const Sheet = ({
   return (
     <BottomSheetModal
       stackBehavior="push"
-      index={1}
+      index={0}
       snapPoints={snapPoints}
       ref={bottomSheetModalRef}
       onDismiss={() => {

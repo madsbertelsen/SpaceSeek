@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface MapState {
   style: any;
+  styleStr: string;
 }
 
 const initialState: MapState = {
   style: null,
+  styleStr: null as any,
 };
 
 export const counterSlice = createSlice({
@@ -14,6 +16,7 @@ export const counterSlice = createSlice({
   reducers: {
     setStyle: (state, action: PayloadAction<any>) => {
       state.style = action.payload;
+      state.styleStr = JSON.stringify(action.payload);
     },
   },
 });

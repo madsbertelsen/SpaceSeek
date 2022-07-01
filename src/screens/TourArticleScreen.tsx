@@ -1,8 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator } from 'react-native';
 
-import { RegularText } from '../components/Basic/Basic';
-import { BlurView } from '@react-native-community/blur';
 import { ThemedStatusBar } from '../components/ThemedStatusBar/ThemedStatusBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -14,27 +11,12 @@ import React, {
   useState,
 } from 'react';
 import * as RN from 'react-native';
-import ReadMore from 'react-native-read-more-text';
 import MapboxGL from '@rnmapbox/maps';
 import { useTheme } from 'styled-components';
-import BottomSheet, {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
-  BottomSheetSectionList,
-  ScrollEventHandlerCallbackType,
-  ScrollEventsHandlersHookType,
-} from '@gorhom/bottom-sheet';
-import { SectionContent } from './components/SectionContent';
-import { loadTour, setFocusWaypoint } from '../redux/reducers/tourSlice';
-import { Waypoint } from './components/WaypointList';
-import ImageCollage from './components/ImageCollage';
-import { ContentSection } from '../components/LaunchContent/LaunchContent.styled';
-import { difference, bboxPolygon, feature, bbox } from '@turf/turf';
-import { ScrollView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { difference, bboxPolygon, feature } from '@turf/turf';
 import { Sheet } from './Sheet';
 import { pushScreen, setBounds } from '../redux/reducers/configSlice';
-import { config } from '../config/config';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
@@ -48,11 +30,9 @@ const { height, width } = RN.Dimensions.get('screen');
 
 export const TourArticleScreen = (props: DetailsScreenProps) => {
   const dispatch = useDispatch();
-  const [error, setError] = React.useState(false);
   const { t } = useTranslation();
   const features = useSelector((state: RootState) => state.features.features);
   const conf = useSelector((state: RootState) => state.config);
-  console.log(conf);
   const id = props.route?.params?.id
     ? parseInt(props.route?.params?.id!)
     : conf.root_screen_id;
@@ -68,7 +48,7 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
   const cameraRef = useRef<MapboxGL.Camera>();
   const mapRef = useRef<MapboxGL.MapView>();
   // variables
-  const snapPoints = useMemo(() => [height / 3, 2 * (height / 3)], []);
+  const snapPoints = useMemo(() => [2 * (height / 3)], []);
 
   const bounds = useMemo(() => {
     const bo = conf.bounds;
@@ -79,20 +59,10 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
     } else {
       return { sw: [box[0], box[1]], ne: [box[2], box[3]] };
     }
-
-    //const b = bbox(feature(tour.tour.geometry));
-    //return { sw: [b[0], b[1]], ne: [b[2], b[3]] };
-  }, [conf.bounds]);
-
-  const padding = useMemo(() => {
-    return conf.padding;
-
-    //const b = bbox(feature(tour.tour.geometry));
-    //return { sw: [b[0], b[1]], ne: [b[2], b[3]] };
   }, [conf.bounds]);
 
   const [paddingBottom, setPaddingBottom] = useState<number>(
-    snapPoints[1] + 50,
+    snapPoints[0] + 50,
   );
 
   useEffect(() => {
@@ -202,18 +172,9 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
                     animationMode: 'flyTo',
                     animationDuration: 1,
                   }}
-                  //   centerCoordinate={content.geometry.coordinates}
                   animationDuration={300}
                   bounds={bounds}
-                  padding={padding}
-                  /*
-                  padding={{
-                    paddingBottom: paddingBottom,
-                    paddingLeft: 50,
-                    paddingRight: 50,
-                    paddingTop: 50,
-                  }}
-                  */
+                  padding={conf.padding}
                 />
                 <MapboxGL.ShapeSource
                   id="mapstory"
@@ -227,7 +188,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
                 snapPoints={snapPoints}
                 onDismiss={() => {}}
                 onPush={async (idx) => {
-                  console.log(cameraRef.current?.state);
                   const bo = await mapRef.current?.getVisibleBounds()!;
                   const bou = [bo[1][0], bo[1][1], bo[0][0], bo[0][1]];
                   console.log(bou);
