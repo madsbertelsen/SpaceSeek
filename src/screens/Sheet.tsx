@@ -30,110 +30,64 @@ import { loadTour, setFocusWaypoint } from '../redux/reducers/tourSlice';
 import { Waypoint } from './components/WaypointList';
 import ImageCollage from './components/ImageCollage';
 import { ContentSection } from '../components/LaunchContent/LaunchContent.styled';
-import { difference, bboxPolygon, feature } from '@turf/turf';
+import { difference, bboxPolygon, feature, bbox } from '@turf/turf';
 import { ScrollView } from 'react-native-gesture-handler';
-import { popScreen, pushScreen } from '../redux/reducers/configSlice';
+import {
+  popScreen,
+  pushScreen,
+  setBounds,
+} from '../redux/reducers/configSlice';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
 
 export interface SheetProps {
+  snapPoints: number[];
   onDismiss: () => void;
+  handleSheetChange: (index: number) => void;
   onPush: (id: number) => void;
   id: number;
 }
 const { height, width } = RN.Dimensions.get('screen');
 
-export const Sheet = ({ id, onDismiss, onPush }: SheetProps) => {
+export const Sheet = ({
+  id,
+  onDismiss,
+  onPush,
+  snapPoints,
+  handleSheetChange,
+}: SheetProps) => {
   const dispatch = useDispatch();
   const features = useSelector((state: RootState) => state.features.features);
-  // const feature = useSelector((state: RootState) => state.features.features[0]);
-  const conf = useSelector((state: RootState) => state.config);
-  console.log(conf);
 
   const content = features.find((f) => f.id === id)!;
 
   const theme = useTheme();
   const tour = useSelector((state: RootState) => state.tour);
-  //  const features = useSelector((state: RootState) => state.tour.features);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const bbox = content.bbox;
-  const bounds = { sw: [bbox[0], bbox[1]], ne: [bbox[2], bbox[3]] };
 
   // variables
-  const snapPoints = useMemo(() => [height / 3, 2 * (height / 3)], []);
-
-  const [paddingBottom, setPaddingBottom] = useState<number>(
-    snapPoints[1] + 50,
-  );
 
   useEffect(() => {
     bottomSheetModalRef!.current!.present();
   }, [id]);
-
-  const mapFeatures = useMemo(() => {
-    const featureCollection = {
-      type: 'FeatureCollection',
-      features: ['Polygon', 'MultiPolygon'].includes(content.geometry.type)
-        ? [
-            difference(
-              bboxPolygon([0, 0, 90, 90]),
-              // bboxPolygon(bbox as any),
-              feature(content.geometry) as any,
-            ),
-          ]
-        : [],
-    } as any;
-    if (!tour) {
-      return featureCollection;
-    }
-
-    if (tour.elapsedRoute) {
-      featureCollection.features.push({
-        geometry: tour.elapsedRoute,
-        type: 'Feature',
-        properties: {
-          ...(content as any).properties,
-          color: theme.focusedIconColor,
-        },
-      });
-    }
-
-    /*
-      featureCollection.features.push(
-       as any);
-      */
-
-    if (tour.focusWaypoint) {
-      featureCollection.features.push({
-        ...tour.focusWaypoint,
-        properties: {
-          index: tour.focusWaypoint.symbol,
-          color: theme.focusedIconColor,
-        },
-        type: 'Feature',
-      });
-    }
-    return featureCollection;
-  }, [tour.focusWaypoint, tour.elapsedRoute]);
 
   useEffect(() => {
     if (content.geometry.type !== 'LineString') {
       return;
     }
     const waypointIds = content.sub_categories[0].screens.map((s) => s.id);
+
+    const b = bbox(feature(content.geometry));
+    dispatch(setBounds({ bounds: b } as any));
+
     dispatch(
       loadTour({
         lineFeature: content,
         pointFeatures: features.filter((f) => waypointIds.includes(f.id)),
       }),
     );
-  }, []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    const pad = snapPoints[index];
-    setPaddingBottom(pad + 50);
   }, []);
 
   // render
@@ -177,7 +131,9 @@ export const Sheet = ({ id, onDismiss, onPush }: SheetProps) => {
         <Waypoint
           key={prop.item.index}
           idx={prop.item.index}
-          onPress={() => dispatch(pushScreen({ id: prop.item.index }))}
+          onPress={() =>
+            dispatch(pushScreen({ id: tour.features[prop.item.index].id }))
+          }
         />
       );
     } else if (prop.item.type === 'description') {
@@ -211,22 +167,44 @@ export const Sheet = ({ id, onDismiss, onPush }: SheetProps) => {
       );
     } else if (prop.item.type === 'horizontal') {
       return (
-        <ScrollView horizontal>
+        <ScrollView
+          style={{ backgroundColor: prop.item.backgroundColor }}
+          horizontal
+          showsHorizontalScrollIndicator={false}>
           {prop.item.cardElements.map((f) => (
             <RN.Pressable
               onPress={() => {
                 onPush(f.id);
-                //bottomSheetModalRef.current?.present();
-                console.log('');
               }}>
               <RN.View
                 style={{
-                  margin: 50,
+                  margin: 30,
                   backgroundColor: 'gray',
                   height: 200,
                   width: 200,
                 }}>
-                <RN.Text>{f.name}</RN.Text>
+                <RN.Image
+                  style={{
+                    height: 200,
+                    width: 200,
+                  }}
+                  source={{ uri: f.img }}
+                />
+                <RN.View
+                  style={{
+                    position: 'absolute',
+                    backgroundColor: 'white',
+                    padding: 10,
+                    paddingLeft: 0,
+                    zIndex: 10,
+                    top: 0,
+                    left: 0,
+                    flex: 1,
+                  }}>
+                  <RegularText size="l" fontType="bold">
+                    {f.name}
+                  </RegularText>
+                </RN.View>
               </RN.View>
             </RN.Pressable>
           ))}
@@ -252,7 +230,14 @@ export const Sheet = ({ id, onDismiss, onPush }: SheetProps) => {
         title: cat.name,
         data:
           cat.card_layout === 'horizontal'
-            ? [{ type: cat.card_layout, cardElements: cat.screens }]
+            ? [
+                {
+                  type: cat.card_layout,
+                  cardElements: cat.screens.map((s) => {
+                    return features.find((f) => f.id === s.id);
+                  }),
+                },
+              ]
             : cat.screens.map((f: any, index) => {
                 return { index, type: cat.card_layout };
               }),
@@ -277,8 +262,9 @@ export const Sheet = ({ id, onDismiss, onPush }: SheetProps) => {
         shadowOpacity: 0.5,
         shadowRadius: 20,
       }}
-      onChange={handleSheetChanges}>
+      onChange={handleSheetChange}>
       <BottomSheetSectionList
+        bounces={false}
         viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
         onViewableItemsChanged={(ev) => {
           const firstIndex =

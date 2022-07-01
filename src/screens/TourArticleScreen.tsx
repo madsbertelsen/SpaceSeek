@@ -30,10 +30,11 @@ import { loadTour, setFocusWaypoint } from '../redux/reducers/tourSlice';
 import { Waypoint } from './components/WaypointList';
 import ImageCollage from './components/ImageCollage';
 import { ContentSection } from '../components/LaunchContent/LaunchContent.styled';
-import { difference, bboxPolygon, feature } from '@turf/turf';
+import { difference, bboxPolygon, feature, bbox } from '@turf/turf';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Sheet } from './Sheet';
-import { pushScreen } from '../redux/reducers/configSlice';
+import { pushScreen, setBounds } from '../redux/reducers/configSlice';
+import { config } from '../config/config';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
@@ -57,25 +58,63 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
     : conf.root_screen_id;
 
   const content = features.find((f) => f.id === id)!;
-  const [stack, setStack] = useState<number[]>([id]);
-  const [nextStack, setNextStack] = useState<number[]>([]);
 
   const theme = useTheme();
   const mapStyle = useSelector((state: RootState) => state.map.style);
   const tour = useSelector((state: RootState) => state.tour);
   //  const features = useSelector((state: RootState) => state.tour.features);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const bbox = content.bbox;
-  const bounds = { sw: [bbox[0], bbox[1]], ne: [bbox[2], bbox[3]] };
+  const box = content.bbox;
 
+  const cameraRef = useRef<MapboxGL.Camera>();
+  const mapRef = useRef<MapboxGL.MapView>();
   // variables
   const snapPoints = useMemo(() => [height / 3, 2 * (height / 3)], []);
+
+  const bounds = useMemo(() => {
+    const bo = conf.bounds;
+
+    if (bo) {
+      const temp = { sw: [bo[0], bo[1]], ne: [bo[2], bo[3]] };
+      return temp;
+    } else {
+      return { sw: [box[0], box[1]], ne: [box[2], box[3]] };
+    }
+
+    //const b = bbox(feature(tour.tour.geometry));
+    //return { sw: [b[0], b[1]], ne: [b[2], b[3]] };
+  }, [conf.bounds]);
+
+  const padding = useMemo(() => {
+    return conf.padding;
+
+    //const b = bbox(feature(tour.tour.geometry));
+    //return { sw: [b[0], b[1]], ne: [b[2], b[3]] };
+  }, [conf.bounds]);
 
   const [paddingBottom, setPaddingBottom] = useState<number>(
     snapPoints[1] + 50,
   );
 
-  const fe = useMemo(() => {});
+  useEffect(() => {
+    if (!conf.bounds) {
+      dispatch(
+        setBounds({
+          bounds: box,
+          padding: {
+            paddingBottom: paddingBottom,
+            paddingLeft: 50,
+            paddingRight: 50,
+            paddingTop: 50,
+          },
+        }),
+      );
+    }
+  }, []);
+
+  const handleSheetChange = useCallback((index: number) => {
+    const pad = snapPoints[index];
+    //    setPaddingBottom(pad + 5);
+  }, []);
 
   const mapFeatures = useMemo(() => {
     const featureCollection = {
@@ -105,11 +144,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
       });
     }
 
-    /*
-      featureCollection.features.push(
-       as any);
-      */
-
     if (tour.focusWaypoint) {
       featureCollection.features.push({
         ...tour.focusWaypoint,
@@ -122,153 +156,6 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
     }
     return featureCollection;
   }, [tour.focusWaypoint, tour.elapsedRoute]);
-
-  useEffect(() => {
-    if (content.geometry.type !== 'LineString') {
-      return;
-    }
-    const waypointIds = content.sub_categories[0].screens.map((s) => s.id);
-    console.log('LOAD tour');
-    console.log(waypointIds);
-
-    dispatch(
-      loadTour({
-        lineFeature: content,
-        pointFeatures: features.filter((f) => waypointIds.includes(f.id)),
-      }),
-    );
-  }, []);
-
-  useEffect(() => {
-    if (tour.features.length < 1) {
-      return;
-    }
-  }, [tour.features, conf.stack]);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    const pad = snapPoints[index];
-    setPaddingBottom(pad + 50);
-  }, []);
-
-  // render
-  const renderSectionHeader = useCallback(
-    ({ section }) => (
-      <RN.View
-        style={{
-          backgroundColor: 'white',
-          paddingVertical: 0,
-          paddingHorizontal: 20,
-          shadowRadius: 5,
-          shadowOffset: { width: 0, height: 15 },
-          shadowColor: 'black',
-          shadowOpacity: 0.0,
-        }}>
-        <RegularText size="xxl" fontType="bold">
-          {section.title}
-        </RegularText>
-      </RN.View>
-    ),
-    [],
-  );
-  const renderTruncatedFooter = (handlePress: any) => {
-    return (
-      <RegularText onPress={handlePress} size="xl" fontType="regular">
-        Read more
-      </RegularText>
-    );
-  };
-
-  const renderRevealedFooter = (handlePress: any) => {
-    return <RN.Text onPress={handlePress}>Show less</RN.Text>;
-  };
-
-  const handleTextReady = () => {
-    // ...
-  };
-  const renderItem = useCallback((prop) => {
-    if (prop.item.type === 'waypoint') {
-      return <Waypoint key={prop.item.index} idx={prop.item.index} />;
-    } else if (prop.item.type === 'description') {
-      return (
-        <RN.View style={{ padding: 20 }}>
-          <ReadMore
-            style={{ flex: 1, width: '100%', padding: 20 }}
-            numberOfLines={3}
-            renderTruncatedFooter={renderTruncatedFooter}
-            renderRevealedFooter={renderRevealedFooter}
-            onReady={handleTextReady}>
-            <RegularText size="l" fontType="regular">
-              {prop.item.value}
-            </RegularText>
-          </ReadMore>
-          {content.photos && content.photos.length > 0 && (
-            <ImageCollage
-              height={400}
-              containerStyle={{ width: '100%' }}
-              images={content.photos}
-              onPressImage={(uri) => {
-                console.log('');
-              }}
-              matrix={[
-                1,
-                content.photos.length > 3 ? 3 : content.photos.length - 1,
-              ]}
-            />
-          )}
-        </RN.View>
-      );
-    } else if (prop.item.type === 'horizontal') {
-      return (
-        <ScrollView horizontal>
-          {prop.item.cardElements.map((f) => (
-            <RN.Pressable
-              onPress={() => {
-                console.log('hej');
-                setStack([...stack, f.id]);
-                // bottomSheetModalRef.current?.present();
-                console.log('hej');
-              }}>
-              <RN.View
-                style={{
-                  margin: 50,
-                  backgroundColor: 'gray',
-                  height: 200,
-                  width: 200,
-                }}>
-                <RN.Text>{f.name}</RN.Text>
-              </RN.View>
-            </RN.Pressable>
-          ))}
-        </ScrollView>
-      );
-    } else {
-      return (
-        <RN.View>
-          <RN.Text>{JSON.stringify(prop.item)}</RN.Text>
-        </RN.View>
-      );
-    }
-  }, []);
-
-  // variables
-  const sections = useMemo(
-    () => [
-      {
-        title: content.name,
-        data: [{ value: content.description, type: 'description' }],
-      },
-      ...content.sub_categories.map((cat) => ({
-        title: cat.name,
-        data:
-          cat.card_layout === 'horizontal'
-            ? [{ type: cat.card_layout, cardElements: cat.screens }]
-            : cat.screens.map((f: any, index) => {
-                return { index, type: cat.card_layout };
-              }),
-      })),
-    ],
-    [content, tour.features],
-  );
 
   return (
     <>
@@ -296,97 +183,68 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
               right: 0,
               left: 0,
             }}>
-            <MapboxGL.MapView
-              styleJSON={JSON.stringify(mapStyle)}
-              logoEnabled={false}
-              style={{
-                flex: 1,
-                height: 300,
-                marginHorizontal: content.marginHorizontal,
-              }}>
-              {/*
+            {bounds && (
+              <MapboxGL.MapView
+                styleJSON={JSON.stringify(mapStyle)}
+                ref={mapRef as any}
+                logoEnabled={false}
+                style={{
+                  flex: 1,
+                  height: 300,
+                  marginHorizontal: content.marginHorizontal,
+                }}>
+                {/*
         <MapboxGL.UserLocation />
         */}
-              <MapboxGL.Camera
-                defaultSettings={{
-                  animationMode: 'flyTo',
-                  animationDuration: 1,
-                }}
-                //   centerCoordinate={content.geometry.coordinates}
-                animationDuration={100}
-                bounds={bounds}
-                padding={{
-                  paddingBottom: paddingBottom,
-                  paddingLeft: 50,
-                  paddingRight: 50,
-                  paddingTop: 50,
-                }}
-              />
-              <MapboxGL.ShapeSource id="mapstory" shape={mapFeatures as any} />
-            </MapboxGL.MapView>
-            {conf.stack &&
-              conf.stack.map((screenId) => (
-                <Sheet
-                  onDismiss={() => {}}
-                  onPush={(idx) => {
-                    dispatch(pushScreen({ id: idx }));
-                    //   bottomSheetModalRef.current!.dismiss();
-                    //   setStack(idx);
-                    //  bottomSheetModalRef.current?.present();
+                <MapboxGL.Camera
+                  ref={cameraRef as any}
+                  defaultSettings={{
+                    animationMode: 'flyTo',
+                    animationDuration: 1,
                   }}
-                  key={screenId}
-                  id={screenId}
+                  //   centerCoordinate={content.geometry.coordinates}
+                  animationDuration={300}
+                  bounds={bounds}
+                  padding={padding}
+                  /*
+                  padding={{
+                    paddingBottom: paddingBottom,
+                    paddingLeft: 50,
+                    paddingRight: 50,
+                    paddingTop: 50,
+                  }}
+                  */
                 />
-              ))}
+                <MapboxGL.ShapeSource
+                  id="mapstory"
+                  shape={mapFeatures as any}
+                />
+              </MapboxGL.MapView>
+            )}
+            {conf.screenStack.map((screen) => (
+              <Sheet
+                handleSheetChange={handleSheetChange}
+                snapPoints={snapPoints}
+                onDismiss={() => {}}
+                onPush={async (idx) => {
+                  console.log(cameraRef.current?.state);
+                  const bo = await mapRef.current?.getVisibleBounds()!;
+                  const bou = [bo[1][0], bo[1][1], bo[0][0], bo[0][1]];
+                  console.log(bou);
+                  dispatch(
+                    pushScreen({
+                      id: idx,
+                      bounds: bou,
+                    }),
+                  );
+                }}
+                key={screen.id}
+                id={screen.id}
+              />
+            ))}
           </RN.View>
         </RN.View>
       </BottomSheetModalProvider>
     </>
   );
 };
-
-const styles = RN.StyleSheet.create({
-  img: {
-    backgroundColor: '#ccc',
-    width: '100%',
-    height: '40%',
-    justifyContent: 'flex-end',
-    padding: 16,
-  },
-  padImg: {
-    marginVertical: 16,
-    width: '80%',
-    height: 160,
-    alignSelf: 'center',
-    borderRadius: 8,
-  },
-  wiki: {
-    paddingHorizontal: 2,
-    paddingVertical: 4,
-    backgroundColor: 'red',
-  },
-  videoItem: {
-    marginVertical: 8,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    shadowColor: '#ccc',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  textShadow: {
-    textShadowColor: 'rgba(0,0,0,0.8)',
-    textShadowRadius: 2,
-    textShadowOffset: { width: 1, height: 1 },
-  },
-  sectionHeaderContainer: {
-    backgroundColor: 'white',
-    padding: 6,
-  },
-  itemContainer: {
-    padding: 6,
-    margin: 6,
-    backgroundColor: '#eee',
-  },
-});

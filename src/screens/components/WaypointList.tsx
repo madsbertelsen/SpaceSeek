@@ -26,7 +26,13 @@ export const Waypoint = ({
   const tour = useSelector((state: RootState) => state.tour);
 
   return (
-    <RN.Pressable onPress={onPress}>
+    <RN.Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        {
+          backgroundColor: pressed ? 'rgb(210, 230, 255)' : undefined,
+        },
+      ]}>
       <RN.View
         style={{
           width: width,
@@ -123,154 +129,5 @@ export const Waypoint = ({
         </RN.View>
       </RN.View>
     </RN.Pressable>
-  );
-};
-export const WaypointList = ({
-  context,
-  featureIds,
-}: // onFocus,
-{
-  context: Feature;
-  //  onFocus: (arg) => void;
-  featureIds: number[];
-}) => {
-  const theme = useTheme();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const dispatch = useDispatch();
-  const features = useSelector((state: RootState) => state.tour.features);
-
-  const itemHeightsRef = useRef([]);
-  const offsets = useRef<number[]>([]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      let acc = -100;
-      const sum = itemHeightsRef.current.reduce(
-        (prev, current) => prev + current,
-        0,
-      );
-
-      for (const i of itemHeightsRef.current) {
-        acc += i;
-        const ratio = 1 - (sum - acc) / sum;
-        console.log('i ' + i, 'ratio ', ratio);
-        const val = acc - ratio * 200;
-        console.log('val ', val);
-        offsets.current!.push(val);
-      }
-    }, 500);
-  }, [itemHeightsRef.current]);
-
-  return (
-    <>
-      <ScrollView
-        onLayout={() => console.log('scroll layout')}
-        style={{ height: 400 }}
-        scrollEventThrottle={16}
-        onScroll={(ev) => {
-          const offset = ev.nativeEvent.contentOffset.y;
-
-          for (let i = 0; i < offsets.current!.length; i++) {
-            let accVal = offsets.current![i];
-
-            if (accVal > offset) {
-              console.log(i);
-              if (activeIndex !== i) {
-                dispatch(setFocusWaypoint({ id: i }));
-                setActiveIndex(i);
-              }
-              break;
-            }
-          }
-        }}>
-        {features &&
-          features.map((f, idx) => {
-            return (
-              <RN.View
-                onLayout={(ev) => {
-                  (itemHeightsRef.current as any)[idx] =
-                    ev.nativeEvent.layout.height;
-                  console.log('on layout idx ' + idx);
-                }}
-                key={idx}
-                style={{
-                  width: width,
-                  flex: 1,
-                  flexDirection: 'row',
-                }}>
-                <Svg
-                  height={'100%'}
-                  style={{
-                    marginTop: 50,
-                    width: 50,
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                  }}>
-                  <G x={30} y={14}>
-                    <Circle
-                      x={0}
-                      y={0}
-                      r={12}
-                      stroke={strokeColor}
-                      fill={
-                        activeIndex === idx ? theme.focusedIconColor : 'white'
-                      }
-                      strokeWidth={2}
-                      onPress={() => {}}
-                    />
-                    <Text
-                      fontSize={12}
-                      fontWeight="bold"
-                      //verticalAlign={20}
-                      alignmentBaseline="center"
-                      textAnchor="middle"
-                      fill={strokeColor}
-                      y={-3}
-                      x={0}>
-                      {f.symbol}
-                    </Text>
-                  </G>
-                  {idx !== 0 && (
-                    <Rect
-                      x={-10}
-                      y={8}
-                      height={30}
-                      stroke={strokeColor}
-                      strokeWidth={2}
-                    />
-                  )}
-                  <Rect
-                    x={30}
-                    y={24}
-                    height={400}
-                    stroke={
-                      activeIndex > idx ? theme.focusedIconColor : strokeColor
-                    }
-                    strokeWidth={2}
-                  />
-                </Svg>
-                <RN.View
-                  style={{
-                    flexGrow: 1,
-                    padding: 20,
-                    flex: 1,
-                    flexDirection: 'row',
-                  }}>
-                  <RN.View style={{ flex: 1 }}>
-                    <RegularText size="l" fontType="bold">
-                      {f.name}
-                    </RegularText>
-                  </RN.View>
-                  <RN.Image
-                    style={{ height: 120, flexGrow: 2, flex: 2 }}
-                    source={{ uri: f.img }}
-                  />
-                </RN.View>
-              </RN.View>
-            );
-          })}
-      </ScrollView>
-    </>
   );
 };

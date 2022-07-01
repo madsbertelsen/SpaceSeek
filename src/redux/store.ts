@@ -27,12 +27,13 @@ const reducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage, //: AsyncStorage,
+  blacklist: ['tour'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 const store = configureStore(
   {
-    reducer: persistedReducer,
+    reducer: reducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
