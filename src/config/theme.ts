@@ -31,7 +31,7 @@ export const lightTheme: DefaultTheme = {
   backgroundColorLight: 'rgb(250, 250, 250)',
   successColor: '#008214',
   failColor: '#990000',
-  splashBackgroundColor: '#21202e',
+  splashBackgroundColor: 'white',
   primaryColor: '#e96232',
   focusedIconColor: '#e96232',
   unFocusedIconColor: '#cccccc',

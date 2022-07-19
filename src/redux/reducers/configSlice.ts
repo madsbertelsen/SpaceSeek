@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FeatureCollection } from '@turf/turf';
 
 interface Padding {
   paddingBottom: number;
@@ -7,9 +8,20 @@ interface Padding {
   paddingTop: number;
 }
 
+interface Bounds {
+  sw: number[];
+  ne: number[];
+}
+
 export interface ConfigState {
   root_screen_id: number;
-  screenStack: { id: number; bounds: number[] }[];
+  sheetStack: { id: number; bounds: number[] }[];
+
+  mapConfig: {
+    padding: Padding;
+    bounds: number[];
+    featureCollection: FeatureCollection;
+  };
   bounds: number[];
   padding: Padding;
   _padding: Padding;
@@ -17,7 +29,8 @@ export interface ConfigState {
 
 const initialState: ConfigState = {
   root_screen_id: 0,
-  screenStack: [] as any,
+  sheetStack: [] as any,
+  mapConfig: {},
 };
 
 export const configSlice = createSlice({
@@ -26,7 +39,7 @@ export const configSlice = createSlice({
   reducers: {
     setConfig: (state, action: PayloadAction<any>) => {
       state.root_screen_id = action.payload.root_screen_id;
-      state.screenStack = [
+      state.sheetStack = [
         { id: action.payload.root_screen_id, bounds: undefined as any },
       ];
     },
@@ -41,19 +54,19 @@ export const configSlice = createSlice({
         state.padding = action.payload.padding;
       }
     },
-    pushScreen: (
+    pushSheet: (
       state,
       action: PayloadAction<{ id: number; bounds: number[] }>,
     ) => {
       state.padding = state._padding;
-      state.screenStack.push({ id: action.payload.id, bounds: [] });
-      state.screenStack[state.screenStack.length - 1].bounds =
+      state.sheetStack.push({ id: action.payload.id, bounds: [] });
+      state.sheetStack[state.sheetStack.length - 1].bounds =
         action.payload.bounds;
     },
-    popScreen: (state) => {
-      state.bounds = state.screenStack[state.screenStack.length - 1].bounds;
+    popSheet: (state) => {
+      state.bounds = state.sheetStack[state.sheetStack.length - 1].bounds;
       state.padding = undefined as any;
-      state.screenStack.pop();
+      state.sheetStack.pop();
     },
   },
 });
@@ -61,8 +74,8 @@ export const configSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   setConfig,
-  pushScreen,
-  popScreen,
+  pushSheet,
+  popSheet,
   setBounds,
 } = configSlice.actions;
 

@@ -13,6 +13,18 @@
 		29708AA32725688300695382 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29708AA22725688300695382 /* AppDelegate.m */; };
 		2BCB150216A34AFDB3A293DA /* RobotoCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AE97E501D0540CAAF8800B8 /* RobotoCondensed-LightItalic.ttf */; };
 		39E8304530154D3BBA63796B /* RobotoCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B1E98A4EFCE4E569B3F319A /* RobotoCondensed-Bold.ttf */; };
+		4A7AEB8228841439009E5DDA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29708AA22725688300695382 /* AppDelegate.m */; };
+		4A7AEB8328841439009E5DDA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		4A7AEB8528841439009E5DDA /* libPods-SpaceSeek.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A64CEDFD8E79228DB2F4341 /* libPods-SpaceSeek.a */; };
+		4A7AEB8628841439009E5DDA /* Mapbox in Frameworks */ = {isa = PBXBuildFile; productRef = 4A7AEB7D28841439009E5DDA /* Mapbox */; };
+		4A7AEB8828841439009E5DDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		4A7AEB8928841439009E5DDA /* RobotoCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B1E98A4EFCE4E569B3F319A /* RobotoCondensed-Bold.ttf */; };
+		4A7AEB8A28841439009E5DDA /* RobotoCondensed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60CC8715C42544A7890C1DF3 /* RobotoCondensed-BoldItalic.ttf */; };
+		4A7AEB8B28841439009E5DDA /* RobotoCondensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE98758916C742F3A062D276 /* RobotoCondensed-Italic.ttf */; };
+		4A7AEB8C28841439009E5DDA /* RobotoCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91E27A870D464DF2BB693765 /* RobotoCondensed-Light.ttf */; };
+		4A7AEB8D28841439009E5DDA /* RobotoCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AE97E501D0540CAAF8800B8 /* RobotoCondensed-LightItalic.ttf */; };
+		4A7AEB8E28841439009E5DDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2903C124255DED4A00BF439D /* Assets.xcassets */; };
+		4A7AEB8F28841439009E5DDA /* RobotoCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8A33D38C08047EE8D3382B9 /* RobotoCondensed-Regular.ttf */; };
 		4A9E6364285CA873001DF1CA /* Mapbox in Frameworks */ = {isa = PBXBuildFile; productRef = 50C15D376F9FDFD01056E0F5 /* Mapbox */; };
 		6D6E00F9F3FC4EB5AFA76BAA /* RobotoCondensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE98758916C742F3A062D276 /* RobotoCondensed-Italic.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -26,7 +38,7 @@
 		00E356F21AD99517003FC87E /* ReactNativeBaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeBaseTests.m; sourceTree = "<group>"; };
 		03D7EBF12D10933B37E26794 /* Pods-ReactNativeBase-ReactNativeBaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeBase-ReactNativeBaseTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeBase-ReactNativeBaseTests/Pods-ReactNativeBase-ReactNativeBaseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		06A9B221670B612A4D9B5304 /* Pods-ReactNativeBase-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeBase-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeBase-tvOSTests/Pods-ReactNativeBase-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* SpaceSeek.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceSeek.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Limfjordsruter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Limfjordsruter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ReactNativeBase/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactNativeBase/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNativeBase/main.m; sourceTree = "<group>"; };
@@ -37,6 +49,8 @@
 		29D47B3C25478B6400597C2C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		36518C42E0A54D61BF925210 /* RobotoCondensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoCondensed-Regular.ttf"; path = "../assets/fonts/RobotoCondensed-Regular.ttf"; sourceTree = "<group>"; };
 		3E83DC7E91F84E90B39EF872 /* RobotoCondensed-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoCondensed-BoldItalic.ttf"; path = "../assets/fonts/RobotoCondensed-BoldItalic.ttf"; sourceTree = "<group>"; };
+		4A7AEB9628841439009E5DDA /* Gastrominoen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gastrominoen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A7AEB972884143A009E5DDA /* SpaceSeek copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SpaceSeek copy-Info.plist"; path = "/Users/msb/workspace/SpaceSeek/ios/SpaceSeek copy-Info.plist"; sourceTree = "<absolute>"; };
 		4AE97E501D0540CAAF8800B8 /* RobotoCondensed-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoCondensed-LightItalic.ttf"; path = "../android/app/src/main/assets/fonts/RobotoCondensed-LightItalic.ttf"; sourceTree = "<group>"; };
 		523683C62F924EE7A3C3F971 /* RobotoCondensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RobotoCondensed-Light.ttf"; path = "../assets/fonts/RobotoCondensed-Light.ttf"; sourceTree = "<group>"; };
 		534B2E9EC8C8D5EDC873C251 /* Pods-ReactNativeBase-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeBase-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeBase-tvOS/Pods-ReactNativeBase-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +83,15 @@
 			files = (
 				1E593F6E3A375D0756457E98 /* libPods-SpaceSeek.a in Frameworks */,
 				4A9E6364285CA873001DF1CA /* Mapbox in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A7AEB8428841439009E5DDA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A7AEB8528841439009E5DDA /* libPods-SpaceSeek.a in Frameworks */,
+				4A7AEB8628841439009E5DDA /* Mapbox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +159,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				F077025F0A624051C020F84D /* Pods */,
 				E07C08250FC745A99F943343 /* Resources */,
+				4A7AEB972884143A009E5DDA /* SpaceSeek copy-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -145,7 +169,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* SpaceSeek.app */,
+				13B07F961A680F5B00A75B9A /* Limfjordsruter.app */,
+				4A7AEB9628841439009E5DDA /* Gastrominoen.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,9 +214,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* SpaceSeek */ = {
+		13B07F861A680F5B00A75B9A /* Limfjordsruter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SpaceSeek" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Limfjordsruter" */;
 			buildPhases = (
 				67978225532F844684CE6FCF /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -206,12 +231,37 @@
 			);
 			dependencies = (
 			);
-			name = SpaceSeek;
+			name = Limfjordsruter;
 			packageProductDependencies = (
 				50C15D376F9FDFD01056E0F5 /* Mapbox */,
 			);
 			productName = ReactNativeBase;
-			productReference = 13B07F961A680F5B00A75B9A /* SpaceSeek.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Limfjordsruter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4A7AEB7C28841439009E5DDA /* Gastrominoen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A7AEB9328841439009E5DDA /* Build configuration list for PBXNativeTarget "Gastrominoen" */;
+			buildPhases = (
+				4A7AEB7F28841439009E5DDA /* [CP] Check Pods Manifest.lock */,
+				4A7AEB8028841439009E5DDA /* Start Packager */,
+				4A7AEB8128841439009E5DDA /* Sources */,
+				4A7AEB8428841439009E5DDA /* Frameworks */,
+				4A7AEB8728841439009E5DDA /* Resources */,
+				4A7AEB9028841439009E5DDA /* Bundle React Native code and images */,
+				4A7AEB9128841439009E5DDA /* [CP] Copy Pods Resources */,
+				4A7AEB9228841439009E5DDA /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Gastrominoen;
+			packageProductDependencies = (
+				4A7AEB7D28841439009E5DDA /* Mapbox */,
+			);
+			productName = ReactNativeBase;
+			productReference = 4A7AEB9628841439009E5DDA /* Gastrominoen.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -244,7 +294,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* SpaceSeek */,
+				13B07F861A680F5B00A75B9A /* Limfjordsruter */,
+				4A7AEB7C28841439009E5DDA /* Gastrominoen */,
 			);
 		};
 /* End PBXProject section */
@@ -265,6 +316,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A7AEB8728841439009E5DDA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A7AEB8828841439009E5DDA /* LaunchScreen.storyboard in Resources */,
+				4A7AEB8928841439009E5DDA /* RobotoCondensed-Bold.ttf in Resources */,
+				4A7AEB8A28841439009E5DDA /* RobotoCondensed-BoldItalic.ttf in Resources */,
+				4A7AEB8B28841439009E5DDA /* RobotoCondensed-Italic.ttf in Resources */,
+				4A7AEB8C28841439009E5DDA /* RobotoCondensed-Light.ttf in Resources */,
+				4A7AEB8D28841439009E5DDA /* RobotoCondensed-LightItalic.ttf in Resources */,
+				4A7AEB8E28841439009E5DDA /* Assets.xcassets in Resources */,
+				4A7AEB8F28841439009E5DDA /* RobotoCondensed-Regular.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -281,6 +347,133 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		4A7AEB7F28841439009E5DDA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SpaceSeek-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A7AEB8028841439009E5DDA /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4A7AEB9028841439009E5DDA /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		4A7AEB9128841439009E5DDA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SpaceSeek/Pods-SpaceSeek-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-60309c9c/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpaceSeek/Pods-SpaceSeek-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A7AEB9228841439009E5DDA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SpaceSeek/Pods-SpaceSeek-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpaceSeek/Pods-SpaceSeek-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		67978225532F844684CE6FCF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -407,6 +600,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A7AEB8128841439009E5DDA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A7AEB8228841439009E5DDA /* AppDelegate.m in Sources */,
+				4A7AEB8328841439009E5DDA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -414,11 +616,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 911D414820374BEC9C9145CE /* Pods-SpaceSeek.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Limfjordsruter;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -430,7 +632,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -451,11 +653,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A452BF3341E96880C809BCA /* Pods-SpaceSeek.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Limfjordsruter;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 589242RZ8A;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = ReactNativeBase/Info.plist;
@@ -466,7 +668,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -478,6 +680,78 @@
 				PROVISIONING_PROFILE_SPECIFIER = Limfjordsruter;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		4A7AEB9428841439009E5DDA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 911D414820374BEC9C9145CE /* Pods-SpaceSeek.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = Gastrominoen;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 589242RZ8A;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				INFOPLIST_FILE = "SpaceSeek copy-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
+				INFOPLIST_PREPROCESS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.1;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.mapstory.app.gastrominoen;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		4A7AEB9528841439009E5DDA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A452BF3341E96880C809BCA /* Pods-SpaceSeek.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = Gastrominoen;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 589242RZ8A;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				INFOPLIST_FILE = "SpaceSeek copy-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
+				INFOPLIST_PREPROCESS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.1;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.mapstory.app.gastrominoen;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Gastrominoen;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -610,11 +884,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SpaceSeek" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Limfjordsruter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A7AEB9328841439009E5DDA /* Build configuration list for PBXNativeTarget "Gastrominoen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A7AEB9428841439009E5DDA /* Debug */,
+				4A7AEB9528841439009E5DDA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -639,9 +922,22 @@
 				version = 5.12.1;
 			};
 		};
+		4A7AEB7E28841439009E5DDA /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maplibre/maplibre-gl-native-distribution";
+			requirement = {
+				kind = exactVersion;
+				version = 5.12.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4A7AEB7D28841439009E5DDA /* Mapbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A7AEB7E28841439009E5DDA /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
+			productName = Mapbox;
+		};
 		50C15D376F9FDFD01056E0F5 /* Mapbox */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 02F60002EC225651758756AF /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;

@@ -6,7 +6,7 @@ import { RootState } from '../../redux/store';
 import Svg, { Circle, G, Rect, Text, TSpan } from 'react-native-svg';
 import { sortWaypoints } from '../../utils';
 import { ScrollView } from 'react-native-gesture-handler';
-import { setFocusWaypoint } from '../../redux/reducers/tourSlice';
+import { LocalFeature, setFocusWaypoint } from '../../redux/reducers/tourSlice';
 import { useTheme } from 'styled-components';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
@@ -17,13 +17,20 @@ const { height, width } = RN.Dimensions.get('screen');
 export const Waypoint = ({
   idx,
   onPress,
+  f,
+  focusIndex,
 }: {
+  f: LocalFeature;
+  focusIndex: number;
   idx: number;
   onPress: () => void;
 }) => {
   const theme = useTheme();
-  const f = useSelector((state: RootState) => state.tour.features[idx]);
-  const tour = useSelector((state: RootState) => state.tour);
+  //   const f = useSelector((state: RootState) => state.tour.features[idx]);
+  //  const tour = useSelector((state: RootState) => state.tour);
+  if (f === undefined) {
+    //    console.log(tour);
+  }
 
   return (
     <RN.Pressable
@@ -54,11 +61,7 @@ export const Waypoint = ({
               y={0}
               r={12}
               stroke={strokeColor}
-              fill={
-                tour.focusWaypointIndex === idx
-                  ? theme.focusedIconColor
-                  : 'white'
-              }
+              fill={focusIndex === idx ? theme.focusedIconColor : 'white'}
               strokeWidth={2}
               onPress={() => {}}
             />
@@ -77,13 +80,9 @@ export const Waypoint = ({
               x={0}
               y={12}
               height={400}
-              stroke={
-                tour.focusWaypointIndex > idx
-                  ? theme.focusedIconColor
-                  : strokeColor
-              }
+              stroke={focusIndex > idx ? theme.focusedIconColor : strokeColor}
               //stroke={theme.focusedIconColor}
-              strokeWidth={tour.focusWaypointIndex > idx ? 4 : 2}
+              strokeWidth={focusIndex > idx ? 4 : 2}
             />
           </G>
         </Svg>

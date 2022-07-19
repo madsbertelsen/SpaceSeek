@@ -1,9 +1,4 @@
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator } from 'react-native';
-
 import { RegularText } from '../components/Basic/Basic';
-import { BlurView } from '@react-native-community/blur';
-import { ThemedStatusBar } from '../components/ThemedStatusBar/ThemedStatusBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import React, {
@@ -15,55 +10,39 @@ import React, {
 } from 'react';
 import * as RN from 'react-native';
 import ReadMore from 'react-native-read-more-text';
-import MapboxGL from '@rnmapbox/maps';
 import { useTheme } from 'styled-components';
-import BottomSheet, {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
-  BottomSheetSectionList,
-  ScrollEventHandlerCallbackType,
-  ScrollEventsHandlersHookType,
-} from '@gorhom/bottom-sheet';
-import { SectionContent } from './components/SectionContent';
+import { BottomSheetModal, BottomSheetSectionList } from '@gorhom/bottom-sheet';
 import { loadTour, setFocusWaypoint } from '../redux/reducers/tourSlice';
 import { Waypoint } from './components/WaypointList';
 import ImageCollage from './components/ImageCollage';
-import { ContentSection } from '../components/LaunchContent/LaunchContent.styled';
-import { difference, bboxPolygon, feature, bbox } from '@turf/turf';
+import { feature, bbox, lineSliceAlong } from '@turf/turf';
 import { ScrollView } from 'react-native-gesture-handler';
-import {
-  popScreen,
-  pushScreen,
-  setBounds,
-} from '../redux/reducers/configSlice';
+import { popSheet, pushSheet, setBounds } from '../redux/reducers/configSlice';
+import { sortWaypoints } from '../utils';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
 
 export interface SheetProps {
   snapPoints: number[];
-  onDismiss: () => void;
+  //onDismiss: () => void;
   handleSheetChange: (index: number) => void;
   onPush: (id: number) => void;
   id: number;
 }
-const { height, width } = RN.Dimensions.get('screen');
 
 export const Sheet = ({
   id,
-  onDismiss,
+  // onDismiss,
   onPush,
   snapPoints,
   handleSheetChange,
 }: SheetProps) => {
+  const [focusIndex, setFocusIndex] = useState(0);
   const dispatch = useDispatch();
   const features = useSelector((state: RootState) => state.features.features);
 
   const content = features.find((f) => f.id === id)!;
-
-  const theme = useTheme();
-  const tour = useSelector((state: RootState) => state.tour);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -72,6 +51,32 @@ export const Sheet = ({
   useEffect(() => {
     bottomSheetModalRef!.current!.present();
   }, [id]);
+
+  const tour = useMemo(() => {
+    if (content.geometry.type !== 'LineString') {
+      return;
+    }
+    const waypointIds = content.sub_categories[0].screens.map((s) => s.id);
+
+    const fea = sortWaypoints({
+      context: { ...content, type: 'Feature' },
+      features: features.filter((f) => waypointIds.includes(f.id)),
+    });
+
+    return {
+      tour: content,
+      features: fea.map((f, idx) => {
+        const symbol =
+          idx === 0 ? 'A' : idx === features.length - 1 ? 'B' : '' + idx;
+        return {
+          ...f,
+          type: 'Feature',
+          symbol,
+          location: f.properties.location as number,
+        };
+      }),
+    };
+  }, [content]);
 
   useEffect(() => {
     if (content.geometry.type !== 'LineString') {
@@ -128,13 +133,14 @@ export const Sheet = ({
   const renderItem = useCallback(
     (prop) => {
       if (prop.item.type === 'vertical_waypoints') {
+        const waypoint = tour!.features[prop.item.index];
         return (
           <Waypoint
+            focusIndex={focusIndex}
+            f={waypoint as any}
             key={prop.item.index}
             idx={prop.item.index}
-            onPress={() =>
-              dispatch(pushScreen({ id: tour.features[prop.item.index].id }))
-            }
+            onPress={() => dispatch(pushSheet({ id: waypoint.id } as any))}
           />
         );
       } else if (prop.item.type === 'description') {
@@ -219,7 +225,7 @@ export const Sheet = ({
         );
       }
     },
-    [tour.features],
+    [tour, focusIndex],
   );
 
   // variables
@@ -246,7 +252,7 @@ export const Sheet = ({
               }),
       })),
     ],
-    [content, tour.features],
+    [content],
   );
 
   return (
@@ -256,9 +262,7 @@ export const Sheet = ({
       snapPoints={snapPoints}
       ref={bottomSheetModalRef}
       onDismiss={() => {
-        console.log('dismissssss ');
-        dispatch(popScreen());
-        // bottomSheetModalRef.current!.present();
+        dispatch(popSheet());
       }}
       style={{
         shadowColor: 'black',
@@ -266,27 +270,40 @@ export const Sheet = ({
         shadowRadius: 20,
       }}
       onChange={handleSheetChange}>
-      <BottomSheetSectionList
-        bounces={false}
-        viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-        onViewableItemsChanged={(ev) => {
-          const firstIndex =
-            ev.viewableItems.length === 0
-              ? 0
-              : ev.viewableItems[0].index === null
-              ? 0
-              : ev.viewableItems[0].index;
+      {(content.geometry.type !== 'LineString' || content.id === id) && (
+        <BottomSheetSectionList
+          bounces={false}
+          viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
+          onViewableItemsChanged={(ev) => {
+            const firstIndex =
+              ev.viewableItems.length === 0
+                ? 0
+                : ev.viewableItems[0].index === null
+                ? 0
+                : ev.viewableItems[0].index;
 
-          if (firstIndex !== tour.focusWaypointIndex) {
-            dispatch(setFocusWaypoint({ index: firstIndex }));
-          }
-        }}
-        sections={sections}
-        keyExtractor={(i) => i.index}
-        renderSectionHeader={renderSectionHeader}
-        renderItem={renderItem}
-        contentContainerStyle={styles.contentContainer}
-      />
+            //   if (firstIndex !== tour.focusWaypointIndex) {
+            if (tour) {
+              setFocusIndex(firstIndex);
+              const focus = tour!.features[firstIndex];
+              const elapsedRoute = lineSliceAlong(
+                tour!.tour.geometry,
+                0,
+                focus.location,
+                { units: 'meters' },
+              ).geometry;
+              dispatch(
+                setFocusWaypoint({ index: firstIndex, elapsedRoute, focus }),
+              );
+            }
+          }}
+          sections={sections}
+          keyExtractor={(i) => i.index}
+          renderSectionHeader={renderSectionHeader}
+          renderItem={renderItem}
+          contentContainerStyle={styles.contentContainer}
+        />
+      )}
     </BottomSheetModal>
   );
 };

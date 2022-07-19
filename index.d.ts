@@ -24,3 +24,6 @@ interface Feature {
   description: string;
   photos: Photo[];
 }
+declare module '@env' {
+  export const BE_URL: string;
+}

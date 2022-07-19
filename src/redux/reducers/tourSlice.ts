@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Geometry, lineSliceAlong } from '@turf/turf';
 import { sortWaypoints } from '../../utils';
 
-type LocalFeature = Feature & { symbol: string; location: number };
+export type LocalFeature = Feature & { symbol: string; location: number };
 
 export interface TourState {
   features: LocalFeature[];
@@ -24,17 +24,23 @@ export const counterSlice = createSlice({
   name: 'tour',
   initialState,
   reducers: {
-    setFocusWaypoint: (state, action: PayloadAction<{ index: number }>) => {
-      const focus = state.features[action.payload.index];
-      state.focusWaypoint = focus;
+    setFocusWaypoint: (
+      state,
+      action: PayloadAction<{ index: number; elapsedRoute: any; focus: any }>,
+    ) => {
+      //  const focus = state.features[action.payload.index];
+      state.focusWaypoint = action.payload.focus;
       state.focusWaypointIndex = action.payload.index;
 
+      state.elapsedRoute = action.payload.elapsedRoute;
+      /*
       state.elapsedRoute = lineSliceAlong(
         state.tour.geometry,
         0,
         state.focusWaypoint.location,
         { units: 'meters' },
       ).geometry;
+      */
     },
     loadTour: (
       state,

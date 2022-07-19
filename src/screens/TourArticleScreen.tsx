@@ -16,7 +16,7 @@ import { useTheme } from 'styled-components';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { difference, bboxPolygon, feature } from '@turf/turf';
 import { Sheet } from './Sheet';
-import { pushScreen, setBounds } from '../redux/reducers/configSlice';
+import { pushSheet, setBounds } from '../redux/reducers/configSlice';
 export interface DetailsScreenIncomeParamsProps {
   id?: string;
 }
@@ -40,7 +40,7 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
   const content = features.find((f) => f.id === id)!;
 
   const theme = useTheme();
-  const mapStyle = useSelector((state: RootState) => state.map.style);
+  const mapStyle = useSelector((state: RootState) => state.map.styleStr);
   const tour = useSelector((state: RootState) => state.tour);
   //  const features = useSelector((state: RootState) => state.tour.features);
   const box = content.bbox;
@@ -80,6 +80,17 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
       );
     }
   }, []);
+  const handlePushSheetRequest = useCallback(async (idx: number) => {
+    const bo = await mapRef.current?.getVisibleBounds()!;
+    const bou = [bo[1][0], bo[1][1], bo[0][0], bo[0][1]];
+    console.log(bou);
+    dispatch(
+      pushSheet({
+        id: idx,
+        bounds: bou,
+      }),
+    );
+  }, []);
 
   const handleSheetChange = useCallback((index: number) => {
     const pad = snapPoints[index];
@@ -87,18 +98,47 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
   }, []);
 
   const mapFeatures = useMemo(() => {
+    let poly;
+    let line;
+    let point;
+
+    for (const f of conf.sheetStack.map((s) =>
+      features.find((f) => f.id === s.id),
+    )) {
+      if (['Polygon', 'MultiPolygon'].includes(f.geometry.type)) {
+        poly = difference(
+          bboxPolygon([0, 0, 90, 90]),
+          feature(f.geometry) as any,
+        );
+      } else if (['LineString', 'MultiLineString'].includes(f.geometry.type)) {
+        line = {
+          geometry: f?.geometry,
+          type: 'Feature',
+          properties: {
+            ...(f as any).properties,
+            color: 'black',
+          },
+        };
+      } else if (['Point', 'MultiPoint'].includes(f.geometry.type)) {
+        point = {
+          geometry: f?.geometry,
+          type: 'Feature',
+          properties: {
+            ...(f as any).properties,
+            color: 'black',
+          },
+        };
+      }
+    }
+
+    console.log('hhhhhhhhh', conf.sheetStack);
+    console.log(point);
+
     const featureCollection = {
       type: 'FeatureCollection',
-      features: ['Polygon', 'MultiPolygon'].includes(content.geometry.type)
-        ? [
-            difference(
-              bboxPolygon([0, 0, 90, 90]),
-              // bboxPolygon(bbox as any),
-              feature(content.geometry) as any,
-            ),
-          ]
-        : [],
-    } as any;
+      features: [poly, line, point].filter((g) => Boolean(g)),
+    };
+
     if (!tour) {
       return featureCollection;
     }
@@ -124,8 +164,9 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
         type: 'Feature',
       });
     }
+
     return featureCollection;
-  }, [tour.focusWaypoint, tour.elapsedRoute]);
+  }, [conf.sheetStack, content, tour]);
 
   return (
     <>
@@ -135,7 +176,7 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
           style={{
             padding: 16,
             shadowRadius: 8,
-            shadowOffset: [5, 5],
+            // shadowOffset: [5, 5],
             shadowOpacity: 0.3,
             shadowColor: 'black',
             borderRadius: 8,
@@ -155,13 +196,12 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
             }}>
             {bounds && (
               <MapboxGL.MapView
-                styleJSON={JSON.stringify(mapStyle)}
+                styleJSON={mapStyle}
                 ref={mapRef as any}
                 logoEnabled={false}
                 style={{
                   flex: 1,
                   height: 300,
-                  marginHorizontal: content.marginHorizontal,
                 }}>
                 {/*
         <MapboxGL.UserLocation />
@@ -182,22 +222,12 @@ export const TourArticleScreen = (props: DetailsScreenProps) => {
                 />
               </MapboxGL.MapView>
             )}
-            {conf.screenStack.map((screen) => (
+            {conf.sheetStack.map((screen) => (
               <Sheet
                 handleSheetChange={handleSheetChange}
                 snapPoints={snapPoints}
-                onDismiss={() => {}}
-                onPush={async (idx) => {
-                  const bo = await mapRef.current?.getVisibleBounds()!;
-                  const bou = [bo[1][0], bo[1][1], bo[0][0], bo[0][1]];
-                  console.log(bou);
-                  dispatch(
-                    pushScreen({
-                      id: idx,
-                      bounds: bou,
-                    }),
-                  );
-                }}
+                // onDismiss={() => {}}
+                onPush={handlePushSheetRequest}
                 key={screen.id}
                 id={screen.id}
               />

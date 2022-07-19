@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { Tabs } from '../../navigators/BottomNavigator';
 import { LaunchStackNavigator } from '../../navigators/LaunchStackNavigator';
 import { setConfig } from '../../redux/reducers/configSlice';
+import { BE_URL } from '@env';
 const axios = require('axios');
 const mapStyle = require('./style.json');
 //const data = require('./data.json');
@@ -35,8 +36,8 @@ export const Main = () => {
   React.useEffect(() => {
     const start = async () => {
       try {
-        const data = (await axios.get('http:/192.168.1.150:1337/api/map/style'))
-          .data;
+        const data = (await axios.get(BE_URL)).data;
+        console.log(BE_URL);
 
         /*
         const data = (
